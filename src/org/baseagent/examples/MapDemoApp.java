@@ -1,12 +1,14 @@
 package org.baseagent.examples;
 
+import org.baseagent.behaviors.map.MoveBehavior;
+import org.baseagent.grid.Grid;
+import org.baseagent.grid.GridLayer;
 import org.baseagent.map.Map;
 import org.baseagent.map.MapLayer;
 import org.baseagent.sim.MapAgent;
 import org.baseagent.sim.Simulation;
-import org.baseagent.ui.MapCanvas;
 import org.baseagent.ui.GridOverlayRenderer;
-import org.baseagent.behaviors.map.MoveBehavior;
+import org.baseagent.ui.MapCanvas;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -44,8 +46,8 @@ public class MapDemoApp extends Application {
         simulation.setUniverse(map);
         mapCanvas.setSimulation(simulation);
 
-        // Create a grid overlay layer and populate some sample values
-        MapLayer minerals = map.createMapLayer("minerals");
+        // Create a backing Grid and attach it as a map overlay. This reuses the Grid/GridLayer
+        // infrastructure (load/save, step policies, HasGridPosition semantics, etc.).
         // Define a grid bounding box somewhere in the Pacific
         double topLat = 10.0;
         double leftLon = -170.0;
@@ -53,11 +55,15 @@ public class MapDemoApp extends Application {
         double rightLon = -150.0;
         int rows = 8;
         int cols = 8;
-        minerals.setGridBounds(topLat, leftLon, bottomLat, rightLon, rows, cols);
-        // scatter some sample mineral values
+        // Create backing Grid and a GridLayer named 'minerals', attach the GridLayer to the Map
+        Grid grid = new Grid(cols, rows);
+        GridLayer gl = grid.createGridLayer("minerals", GridLayer.GridLayerUpdateOption.NO_SWITCH);
+        // Attach the GridLayer to the Map and set geographic bounds
+        MapLayer minerals = map.addGridOverlay("minerals", gl, topLat, leftLon, bottomLat, rightLon);
+        // Populate the backing GridLayer
         for (int r=0; r<rows; r++) {
             for (int c=0; c<cols; c++) {
-                if ((r + c) % 7 == 0) minerals.current().set(c, r, "X");
+                if ((r + c) % 7 == 0) gl.set(c, r, "X");
             }
         }
 
@@ -89,7 +95,7 @@ public class MapDemoApp extends Application {
         mb2.setLoop(true);
         a2.addBehavior(mb2);
 
-        // Start the simulation — Simulation will call each Agent.step(), which executes behaviors
+        // Start the simulation Ã¢â‚¬â€� Simulation will call each Agent.step(), which executes behaviors
         simulation.setDelayAfterEachStep(40); // small pause so movement is visible
         simulation.start();
 
@@ -98,7 +104,7 @@ public class MapDemoApp extends Application {
 
         Scene scene = new Scene(root, 1024, 768);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("BaseAgent Map Demo — Esri World Imagery");
+        primaryStage.setTitle("BaseAgent Map Demo Ã¢â‚¬â€� Esri World Imagery");
         primaryStage.show();
 
         // Clean shutdown hook to stop background tile threads and stop simulation when application exits
