@@ -1,14 +1,14 @@
-package org.baseagent.examples;
+package org.baseagent.examples.worldmap;
 
 import org.baseagent.behaviors.map.MoveBehavior;
 import org.baseagent.grid.Grid;
 import org.baseagent.grid.GridLayer;
-import org.baseagent.map.Map;
-import org.baseagent.map.MapLayer;
-import org.baseagent.sim.MapAgent;
+import org.baseagent.grid.ui.GridOverlayRenderer;
 import org.baseagent.sim.Simulation;
-import org.baseagent.ui.GridOverlayRenderer;
-import org.baseagent.ui.MapCanvas;
+import org.baseagent.worldmap.WorldMap;
+import org.baseagent.worldmap.WorldMapAgent;
+import org.baseagent.worldmap.WorldMapGridLayer;
+import org.baseagent.worldmap.ui.WorldMapCanvas;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -24,17 +24,17 @@ import javafx.stage.Stage;
  * - Ctrl+wheel to change slippy zoom (cursor stays fixed)
  * - Scroll wheel to pan vertically
  */
-public class MapDemoApp extends Application {
-    private MapCanvas mapCanvas;
+public class WorldMapDemoApp extends Application {
+    private WorldMapCanvas mapCanvas;
     private Simulation simulation;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Create a Map (tile grid dimensions are only used for Canvas sizing here)
-        Map map = new Map(8, 6);
+        WorldMap map = new WorldMap(8, 6);
 
         // Create MapCanvas (tileWidth, tileHeight used only for initial sizing)
-        mapCanvas = new MapCanvas(map, 256, 256, 0, 0);
+        mapCanvas = new WorldMapCanvas(map, 256, 256, 0, 0);
         mapCanvas.setWidth(1024);
         mapCanvas.setHeight(768);
 
@@ -59,7 +59,7 @@ public class MapDemoApp extends Application {
         Grid grid = new Grid(cols, rows);
         GridLayer gl = grid.createGridLayer("minerals", GridLayer.GridLayerUpdateOption.NO_SWITCH);
         // Attach the GridLayer to the Map and set geographic bounds
-        MapLayer minerals = map.addGridOverlay("minerals", gl, topLat, leftLon, bottomLat, rightLon);
+        WorldMapGridLayer minerals = map.addGridOverlay("minerals", gl, topLat, leftLon, bottomLat, rightLon);
         // Populate the backing GridLayer
         for (int r=0; r<rows; r++) {
             for (int c=0; c<cols; c++) {
@@ -71,12 +71,12 @@ public class MapDemoApp extends Application {
         mapCanvas.addMapLayerRenderer("minerals", new GridOverlayRenderer());
 
         // Create some agents in the Pacific
-        MapAgent a1 = new MapAgent();
+        WorldMapAgent a1 = new WorldMapAgent();
         a1.setLatLon(0.0, -160.0);
         a1.setColor(Color.CORNFLOWERBLUE);
         simulation.add(a1);
 
-        MapAgent a2 = new MapAgent();
+        WorldMapAgent a2 = new WorldMapAgent();
         a2.setLatLon(-5.0, -155.0);
         a2.setColor(Color.ORANGE);
         simulation.add(a2);

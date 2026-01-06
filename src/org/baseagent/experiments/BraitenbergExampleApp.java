@@ -10,15 +10,15 @@ import javafx.scene.paint.Color;
 
 import org.baseagent.sim.Simulation;
 import org.baseagent.grid.Grid;
+import org.baseagent.grid.GridAgent;
 import org.baseagent.Beacon;
-import org.baseagent.sim.GridAgent;
 import org.baseagent.embodied.EmbodiedAgent;
 import org.baseagent.embodied.sensors.MaxSignalSensor;
 import org.baseagent.embodied.effectors.ForceEffector;
-import org.baseagent.ui.GridCanvasForSimulation;
 import org.baseagent.signals.Signal;
 import org.baseagent.grid.GridLayer;
 import org.baseagent.grid.GridLayer.GridLayerUpdateOption;
+import org.baseagent.grid.ui.GridCanvasForSimulation;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +86,7 @@ public class BraitenbergExampleApp extends Application {
             @Override
             public void sense(org.baseagent.Agent a) {
                 // copy of MaxSignalSensor logic but set direction port to leftwards
-                org.baseagent.sim.GridAgent agent = (org.baseagent.sim.GridAgent)a;
+                org.baseagent.grid.GridAgent agent = (org.baseagent.grid.GridAgent)a;
                 List<Beacon> beacons = agent.getSimulation().getBeacons().stream()
                     .filter(b -> { GridLayer gl = b.getGridLayer(); return gl != null && gl.getLayerName().equals(getLayerName()); })
                     .collect(Collectors.toList());
@@ -114,7 +114,7 @@ public class BraitenbergExampleApp extends Application {
         MaxSignalSensor rightSensor = new MaxSignalSensor("lights", null) {
             @Override
             public void sense(org.baseagent.Agent a) {
-                org.baseagent.sim.GridAgent agent = (org.baseagent.sim.GridAgent)a;
+                org.baseagent.grid.GridAgent agent = (org.baseagent.grid.GridAgent)a;
                 List<Beacon> beacons = agent.getSimulation().getBeacons().stream()
                     .filter(b -> { GridLayer gl = b.getGridLayer(); return gl != null && gl.getLayerName().equals(getLayerName()); })
                     .collect(Collectors.toList());

@@ -1,15 +1,15 @@
 // filepath: p:/Projects/BaseAgent/baseagent_java/src/org/baseagent/examples/MapNetworkExampleApp.java
-package org.baseagent.examples;
+package org.baseagent.examples.worldmap;
 
-import org.baseagent.map.Map;
-import org.baseagent.map.MapLayer;
 import org.baseagent.network.Edge;
 import org.baseagent.network.MapNetworkRenderer;
 import org.baseagent.network.Network;
-import org.baseagent.sim.MapAgent;
-import org.baseagent.sim.PathAgent;
+import org.baseagent.path.PathAgent;
 import org.baseagent.sim.Simulation;
-import org.baseagent.ui.MapCanvas;
+import org.baseagent.worldmap.WorldMap;
+import org.baseagent.worldmap.WorldMapAgent;
+import org.baseagent.worldmap.WorldMapGridLayer;
+import org.baseagent.worldmap.ui.WorldMapCanvas;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,17 +22,17 @@ import javafx.scene.paint.Color;
  * Example application showing a planetary communications network with nodes in London, Paris, and New York.
  * A PathAgent cycles between the three nodes and can be visualized moving on the map.
  */
-public class MapNetworkExampleApp extends Application {
-    private MapCanvas mapCanvas;
+public class WorldMapNetworkExampleApp extends Application {
+    private WorldMapCanvas mapCanvas;
     private Simulation simulation;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Create a Map and canvas
-        Map map = new Map(8, 6);
+        WorldMap map = new WorldMap(8, 6);
         map.createMapLayer("network"); // a dummy layer to attach our MapNetworkRenderer
 
-        mapCanvas = new MapCanvas(map, 256, 256, 0, 0);
+        mapCanvas = new WorldMapCanvas(map, 256, 256, 0, 0);
         mapCanvas.setWidth(1024);
         mapCanvas.setHeight(768);
 
@@ -45,17 +45,17 @@ public class MapNetworkExampleApp extends Application {
         mapCanvas.setSimulation(simulation);
 
         // Build network with nodes at London, Paris, New York
-        Network<MapAgent, Object> network = new Network<>();
+        Network<WorldMapAgent, Object> network = new Network<>();
 
-        MapAgent london = new MapAgent();
+        WorldMapAgent london = new WorldMapAgent();
         london.setLatLon(51.5074, -0.1278);
         london.setColor(Color.DARKGREEN);
 
-        MapAgent paris = new MapAgent();
+        WorldMapAgent paris = new WorldMapAgent();
         paris.setLatLon(48.8566, 2.3522);
         paris.setColor(Color.DARKBLUE);
 
-        MapAgent newyork = new MapAgent();
+        WorldMapAgent newyork = new WorldMapAgent();
         newyork.setLatLon(40.7128, -74.0060);
         newyork.setColor(Color.DARKRED);
 
@@ -69,9 +69,9 @@ public class MapNetworkExampleApp extends Application {
         network.addNode(newyork);
 
         // Connect nodes (undirected visual links — we add both directions for visibility)
-        Edge<MapAgent, Object> e1 = new Edge<>("lon-par", network.getNode(london), network.getNode(paris));
-        Edge<MapAgent, Object> e2 = new Edge<>("par-ny", network.getNode(paris), network.getNode(newyork));
-        Edge<MapAgent, Object> e3 = new Edge<>("ny-lon", network.getNode(newyork), network.getNode(london));
+        Edge<WorldMapAgent, Object> e1 = new Edge<>("lon-par", network.getNode(london), network.getNode(paris));
+        Edge<WorldMapAgent, Object> e2 = new Edge<>("par-ny", network.getNode(paris), network.getNode(newyork));
+        Edge<WorldMapAgent, Object> e3 = new Edge<>("ny-lon", network.getNode(newyork), network.getNode(london));
         network.addEdge(e1);
         network.addEdge(e2);
         network.addEdge(e3);

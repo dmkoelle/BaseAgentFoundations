@@ -6,10 +6,10 @@ import org.baseagent.Patch;
 import org.baseagent.grid.Grid;
 import org.baseagent.grid.GridLayer;
 import org.baseagent.grid.GridLayer.GridLayerUpdateOption;
+import org.baseagent.grid.ui.GridCanvas;
+import org.baseagent.grid.ui.GridCanvasContext;
+import org.baseagent.grid.ui.GridCellRenderer;
 import org.baseagent.sim.Simulation;
-import org.baseagent.ui.GridCanvas;
-import org.baseagent.ui.GridCanvasContext;
-import org.baseagent.ui.GridCellRenderer;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

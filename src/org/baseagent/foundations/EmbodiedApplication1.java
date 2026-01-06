@@ -8,10 +8,10 @@ import org.baseagent.behaviors.Behavior;
 import org.baseagent.embodied.EmbodiedAgent;
 import org.baseagent.embodied.effectors.Effector;
 import org.baseagent.grid.Grid;
-import org.baseagent.sim.GridAgent;
+import org.baseagent.grid.GridAgent;
+import org.baseagent.grid.ui.GridCanvas;
+import org.baseagent.grid.ui.GridCanvasForSimulation;
 import org.baseagent.sim.Simulation;
-import org.baseagent.ui.GridCanvas;
-import org.baseagent.ui.GridCanvasForSimulation;
 import org.baseagent.ui.defaults.VisualizationLibrary;
 
 import javafx.application.Application;
